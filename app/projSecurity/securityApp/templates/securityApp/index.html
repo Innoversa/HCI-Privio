@@ -1,0 +1,113 @@
+{% load static %}
+{% load gTTS %}
+
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<link href="https://fonts.googleapis.com/css?family=Barlow:400,600,700|Miriam+Libre:400,700&display=swap" rel="stylesheet">
+
+<style>
+	@import url('https://fonts.googleapis.com/css?family=Barlow:400,600,700|Miriam+Libre:400,700&display=swap');
+	@keyframes bgGradient {
+		0% {background-position: 4% 0%}
+		35% {background-position: 97% 100%}
+		100% {background-position: 4% 0%}
+	}
+	@-webkit-keyframes {
+		0% {background-position: 4% 0%}
+		35% {background-position: 97% 100%}
+		100% {background-position: 4% 0%}
+	}
+	.bg {
+		background: linear-gradient(200deg, #000, #000, #000, #1f0722, #2c0a47, #0a0054, #0d1058, #000820, #000, #000, #000);
+		background-size: 3000vw, 3000vh;
+		animation: bgGradient 6s ease infinite;
+		-webkit-animation: bgGradient 6s ease infinite;
+	}
+	.main_container {
+   		width: 40vw;
+   		height: 90vh;
+			margin: auto;
+	}
+	h1 { color: black; font-family: 'Barlow' !important; font: 3em 'Barlow', sans-serif; }
+	input.speech_btn {
+		margin-top: -13vh !important;
+		font-family: 'Barlow' !important;
+	}
+	p, .messages {
+		 font-family: 'Barlow' !important;
+	}
+
+	@media (max-width: 1000px) {
+   		.main_container {
+       		width: 90vw;
+       		height: 90vh;
+					margin: 10px;
+   		}
+			h1 { font-famiy: 'Barlow' !important; font: 4em 'Barlow', sans-serif; }
+			input.speech_btn { margin-top: -13vh !important; }
+	}
+    input#id_user_email, input#id_user_name {
+        background-color: transparent;
+        border: transparent;
+        border-bottom: 3px solid black;
+        font-size: 22pt;
+        width: 300px;
+				margin-left: auto;
+				margin-right: auto;
+    }
+
+		.messages {
+        background-color: transparent;
+        border: transparent;
+        width: 300px;
+				margin-left: auto;
+				margin-right: auto;
+    }
+</style>
+
+<!--onclick="{% url 'results' %}"-->
+<!-- background-image: url({% static 'securityApp/email-pattern.png' %}); -->
+<div class="bg" style="margin: -10px; height: 100%; width: 100%; padding: 5vh; position: fixed; text-align: center;">
+	<audio controls id="player" src="{% say 'en-us' 'Welcome to Privio. Enter your name, email address, or both, then submit.' %}" style="display:none;"></audio>
+
+	<div class="main_container" style="background-color: white; border-radius: 20px; box-shadow: 0px 0px 5px 5px #bbb; overflow: scroll; ">
+		<div style="margin: auto; padding-top: 10vh; text-align: center;">
+			<img src="{% static 'securityApp/securityAppLogo.png' %}" height="130vh" alt="Logo">
+			<h1 style="">PRIVIO</h1>
+		</div>
+
+		<div class="messages">
+			{% if messages %}
+				{% for message in messages %}
+					{{ message }}
+				{% endfor %}
+			{% endif %}
+		</div>
+		<p>Please enter full name OR email. </p>
+<br>
+		<form action="/securityApp/results/" method="post">
+    	    {% csrf_token %}
+{#    	{{ form.subject.label_tag }}#}
+            {{ email_form }}
+						<br><br><br>
+    		<!--<div style="margin: auto; background-color: transparent; padding: 30px; text-align: center;">
+{#    			<input type="text" class="email_form" style="background-color: transparent; border: transparent; border-bottom: 3px solid black;font-size: 22pt; height: 50px; width: 300px; ">#}
+    		</div>-->
+            <button type="submit" style="background-color: #1D79FF; border: transparent; border-radius: 20px; box-shadow: 0px 0px 20px #1D79FF; color: white; font-size: 22pt; margin: 10px; height: 50px; width: 120px;">Submit</button>
+
+		</form>
+	</div>
+	<input type="submit"  value="speech" onclick="document.getElementById('player').play()" class="speech_btn" style="background-color: #EE5544; border: 1px solid transparent; border-radius: 20px; box-shadow: 0px 0px 20px red; color: white; display: float; font: 1.5em sans-serif; margin: auto; margin-left: -46vw !important; text-align: center; line-height: 40px; position: fixed; height: 50px; width: 120px; z-index: 5;"></input>
+
+</div>
+
+<script>
+	$(document).ready(function(){
+		$('#id_user_email').on('change', check_input);
+		$('#id_user_name').on('change', check_input);
+
+		function check_input(){
+			if ($('#id_user_email').val() != '' && $('#id_user_name').val() != '')
+				alert('You must enter either an email or a name. Not both!')
+		}
+	})
+</script>

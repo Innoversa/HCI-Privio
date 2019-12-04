@@ -1,0 +1,1 @@
+web: python app/projSecurity/manage.py runserver

@@ -1,0 +1,114 @@
+{% load static %}
+{% load gTTS %}
+
+<link href="https://fonts.googleapis.com/css?family=Barlow:400,600,700|Miriam+Libre:400,700&display=swap" rel="stylesheet">
+<style>
+	@import url('https://fonts.googleapis.com/css?family=Barlow:400,600,700|Miriam+Libre:400,700&display=swap');
+	@keyframes bgGradient {
+		0% {background-position: 4% 0%}
+		35% {background-position: 97% 100%}
+		100% {background-position: 4% 0%}
+	}
+	@-webkit-keyframes {
+		0% {background-position: 4% 0%}
+		35% {background-position: 97% 100%}
+		100% {background-position: 4% 0%}
+	}
+	.bg {
+		background: linear-gradient(200deg, #000, #000, #000, #1f0722, #2c0a47, #0a0054, #0d1058, #000820, #000, #000, #000);
+		background-size: 3000vw, 3000vh;
+		animation: bgGradient 6s ease infinite;
+		-webkit-animation: bgGradient 6s ease infinite;
+	}
+	.main_container {
+   		width: 40vw;
+   		height: 90vh;
+			margin: auto;
+	}
+	h1 { color: black; font-family: 'Barlow' !important; font: 2.5em 'Barlow', sans-serif; }
+	.res, .fb_count {
+		 color: black;
+		 font-family: 'Miriam Libre' !important;
+		 font: 12pt sans-serif;
+	}
+	input.speech_btn {
+		margin-top: -24vh !important;
+		font-family: 'Barlow' !important;
+	}
+	a.back_btn {
+		 margin-top: -13vh !important;
+		 font-family: 'Barlow' !important;
+	}
+
+
+	@media (max-width: 1000px) {
+   		.main_container {
+       		width: 80vw;
+       		height: 90vh;
+					margin: 10px;
+   		}
+   		h1 { font-famiy: 'Barlow' !important; font: 4em 'Barlow', sans-serif; }
+   		input.speech_btn {
+			margin-top: -24vh !important;
+		}
+		a.back_btn {
+		 	margin-top: -14vh !important;
+		}
+	}
+</style>
+<div class="bg" style="margin: -10px;  position: fixed; text-align: center; height: 100%; width: 100%; z-index: -1;">
+</div>
+<!-- http://127.0.0.1:8000/securityApp/gtts/<lang>/<text> -->
+<audio controls id="player" src="{% say 'en-us' 'replace text with speechGen variable' %}" style="display:none;"></audio>
+
+<div class="cont" style="margin: auto; height: auto; padding: 5vh; text-align: center; z-index: 1;">
+
+	<div class="main_container" style="background-color: white; border-radius: 20px; box-shadow: 0px 0px 5px 5px #bbb; display: float; overflow: scroll; padding: 20px; z-index: 5;">
+
+		<div style="margin: auto; padding-top: 5vh; text-align: center;">
+			<img src="{% static 'securityApp/securityAppLogo.png' %}" height="90vh" alt="Logo">
+			<h1 style="">PRIVIO</h1>
+		</div>
+
+		<div style="margin: auto; text-align: center;">
+
+			<!-- security score -->
+			<div class="security_score" style="background-color: #AAEE77; border-radius: 50%; box-shadow: 0px 0px 20px #60BA6A; color: #509A3A; font-family: 'Miriam Libre' !important; font: 3em sans-serif; margin: auto; text-align: center; line-height: 90px; height: 90px; width: 90px;">{{privacyRating}}</div>
+
+			<!-- info -->
+			<div class="results_container" style="padding:2em 0px;">
+                <div class="res res_name"><h2>{{ names }}</h2></div>
+				<div class="res res_address"><b>Address: </b>{{ addresses }}</div>
+                <div class="res re_email"><b>Email: </b>{{ emails }}</div>
+                <div class="res res_address"><b>Usernames:</b> {{ usernames }}</div>
+				<!--<div class="res res_city">Generic City</div>
+				<div class="res res_country">USA</div>-->
+				<div class="res res_phoneNum"><b>Phone: </b>{{ phones }}</div>
+                <div class="res res_address"><b>Education: </b>{{ educations }}</div>
+				<div class="res res_job"><b>Occupation: </b>{{ jobs }}</div>
+                <div class="res res_job"><b>Relationships: </b>{{ relationships }}</div>
+				<div class="res res_IP"><b>IP Address: </b>{{ ipAddress }}</div>
+                <div class="res res_ipCountry"><b>IP Location: </b>{{ ipCity }}, {{ regionName }}, {{ countryName }}</div>
+                <div class="res res_ipProxy"><b>VPN Detected: </b>{{ ipProxy }}</div>
+			</div>
+
+			<!-- social media -->
+			<div class="sm_container"  style="color: black; font: 12pt sans-serif; padding-top:6em;">
+				<!-- <div class="tweet_1">Tweet_1: {{ tweet_1 }}</div>
+				<div class="tweet_2">Tweet_2: {{ tweet_2 }}</div>
+				<div class="tweet_3">Tweet_3: {{ tweet_3 }}</div> -->
+				<div class="fb_count">{{ fb_count }}</div>
+				<a class="twitter-timeline" data-width="600" data-height="600" data-theme="light" href={{ tw_url }}>Tweets by {{ tw_name }}</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+				<!-- <div id="fb-root"></div> -->
+				<!-- <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v5.0&appId=531231427660272&autoLogAppEvents=1"></script> -->
+				<!-- <div class="fb-page" data-href="https://www.facebook.com/profile.php?id=100007979835832" data-tabs="timeline" data-width="600" data-height="600" data-small-header="true" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"></div> -->
+			</div>
+
+		</div>
+	</div> <!-- end of main_container -->
+
+		<!--<form method="get" >-->
+		<input type="submit"  value="speech" onclick="document.getElementById('player').play()" class="speech_btn" style="background-color: #EE5544; border: 1px solid transparent; border-radius: 20px; box-shadow: 0px 0px 20px red; color: white; display: float; font: 1.5em sans-serif; margin: auto; margin-left: -46vw !important; text-align: center; line-height: 40px; position: fixed; height: 50px; width: 120px; z-index: 5;"></input>
+		<!--</form>-->
+		<a class="back_btn" href="/securityApp/" style="background-color: #1D79FF; border-radius: 20px; box-shadow: 0px 0px 20px #1D79FF; color: white; display: float; font: 1.5em sans-serif; margin: auto; margin-left: -46vw !important; text-align: center; line-height: 50px; position: fixed; text-decoration: none; height: 50px; width: 120px; z-index: 5;">back</a>
+</div>

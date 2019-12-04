@@ -1,0 +1,7 @@
+Django-Gtts
+phonenumbers
+django_twilio
+facebook-sdk
+tweepy
+smtp-mail
+piplapis-python
